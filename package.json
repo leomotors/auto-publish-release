@@ -1,0 +1,23 @@
+{
+  "name": "auto-publish-release",
+  "version": "0.10.0",
+  "description": "Create new Release on Push",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leomotors/auto-publish-release.git"
+  },
+  "author": "Leomotors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Leomotors/auto-publish-release/issues"
+  },
+  "homepage": "https://github.com/Leomotors/auto-publish-release#readme",
+  "dependencies": {
+    "@actions/core": "^1.5.0",
+    "@actions/github": "^5.0.0"
+  }
+}
