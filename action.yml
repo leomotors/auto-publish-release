@@ -6,10 +6,7 @@ inputs:
   GITHUB_TOKEN:
     description: "GitHub Token"
     required: true
-  PROJECT_NAME:
-    description: "Name of Project"
 
 runs:
   using: "node12"
-  pre: "setup.js"
   main: "index.js"
