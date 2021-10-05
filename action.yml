@@ -6,6 +6,8 @@ inputs:
   GITHUB_TOKEN:
     description: "GitHub Token"
     required: true
+  CHANGELOG_BODY:
+    description: "Changelog Body when CHANGELOG.md doesn't exist"
 
 runs:
   using: "node12"
