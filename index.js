@@ -50,7 +50,7 @@ async function run() {
     const ReleaseName = `Release ${version}`;
 
     const body =
-      (await getChangelog(version)) ?? core.getInput("CHANGELOG_BODY");
+      (await getChangelog(version)) || core.getInput("CHANGELOG_BODY");
 
     await octokit.request("POST /repos/{owner}/{repo}/releases", {
       owner,
