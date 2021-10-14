@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [1.2.1] - 2021-10-14
+
+- Added "next" for pre-release
+
 ## [1.2.0] - 2021-10-08
 
 - Now detects pre-release version and release as it should be

@@ -14,7 +14,7 @@ async function getVersion() {
 }
 
 function versionIsPrerelease(version) {
-    for (const kw of ["alpha", "beta", "dev", "pre", "rc", "insider"])
+    for (const kw of ["alpha", "beta", "dev", "pre", "rc", "insider", "next"])
         if (version.includes(kw)) return true;
     return false;
 }
