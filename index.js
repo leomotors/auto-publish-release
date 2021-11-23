@@ -1,8 +1,12 @@
+// @ts-check
+
 const core = require("@actions/core");
 const github = require("@actions/github");
 const fs = require("fs").promises;
+const { promisify } = require("util");
+const exec = promisify(require("child_process").exec);
 
-async function getVersion() {
+async function getVersion_PackageJson() {
     const buffer = await fs.readFile("package.json");
     const package_data = JSON.parse(buffer.toString());
     const version = package_data.version;
@@ -49,18 +53,47 @@ async function getChangelog(version) {
 
 async function run() {
     try {
-        const version = await getVersion();
-        const prerelease = versionIsPrerelease(version);
-
         const ghToken = core.getInput("GITHUB_TOKEN");
         const octokit = github.getOctokit(ghToken);
+
+        const versionSrc = core.getInput("VERSION_SOURCE") || "PACKAGE_JSON";
+
+        let version = "";
+        if (versionSrc == "PACKAGE_JSON") {
+            version = await getVersion_PackageJson();
+        } else if (versionSrc == "COMMIT_COUNT") {
+            // * Get Number of Commits
+            const commitCount = (
+                await exec("git rev-list HEAD --count")
+            ).stdout.replace(/^\s+|\s+$/g, "");
+
+            version = `${
+                core.getInput("VERSION_MAJOR_MINOR") || "1.0"
+            }.${commitCount}`;
+        } else {
+            throw new Error(`Unknown Version Source of ${versionSrc}`);
+        }
+
+        if (!version) throw new Error(`Invalid Version: ${version}`);
+
+        const prerelease = versionIsPrerelease(version);
 
         const { owner, repo } = github.context.repo;
 
         const ReleaseName = `Release ${version}`;
 
+        // * Get Current Date by GitHub Copilot
+        const date = new Date();
+        const dateString = `${date.getFullYear()}-${
+            date.getMonth() + 1
+        }-${date.getDate()}`;
+
         const body =
-            (await getChangelog(version)) || core.getInput("CHANGELOG_BODY");
+            (await getChangelog(version)) ||
+            core
+                .getInput("CHANGELOG_BODY")
+                .replace("{VERSION}", version)
+                .replace("{DATE}", dateString);
 
         await octokit.request("POST /repos/{owner}/{repo}/releases", {
             owner,

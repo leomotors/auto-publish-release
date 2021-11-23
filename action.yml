@@ -8,6 +8,10 @@ inputs:
     required: true
   CHANGELOG_BODY:
     description: "Changelog Body when CHANGELOG.md doesn't exist"
+  VERSION_SOURCE:
+    description: "Where to get Version"
+  VERSION_MAJOR_MINOR:
+    description: "This must be given if VERSION_SOURCE is COMMIT_COUNT"
 
 runs:
   using: "node12"
