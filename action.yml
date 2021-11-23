@@ -8,6 +8,8 @@ inputs:
     required: true
   CHANGELOG_BODY:
     description: "Changelog Body when CHANGELOG.md doesn't exist"
+  RELEASE_TITLE:
+    description: "Override Changelog Title"
   VERSION_SOURCE:
     description: "Where to get Version"
   VERSION_MAJOR_MINOR:

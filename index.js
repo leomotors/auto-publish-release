@@ -85,7 +85,6 @@ async function run() {
         if (!version) throw new Error(`Invalid Version: ${version}`);
 
         const prerelease = versionIsPrerelease(version);
-        const ReleaseName = `Release ${version}`;
 
         // * Get Current Date by GitHub Copilot
         const date = new Date();
@@ -93,12 +92,15 @@ async function run() {
             date.getMonth() + 1
         }-${date.getDate()}`;
 
+        const transform = (str) =>
+            str.replace("{VERSION}", version).replace("{DATE}", dateString);
+
         const body =
             (await getChangelog(version)) ||
-            core
-                .getInput("CHANGELOG_BODY")
-                .replace("{VERSION}", version)
-                .replace("{DATE}", dateString);
+            transform(core.getInput("CHANGELOG_BODY"));
+
+        const ReleaseName =
+            transform(core.getInput("RELEASE_TITLE")) || `Release ${version}`;
 
         // * Release Release
         await octokit.request("POST /repos/{owner}/{repo}/releases", {
@@ -108,6 +110,7 @@ async function run() {
             name: ReleaseName,
             body,
             prerelease,
+            generate_release_notes: !body,
         });
     } catch (error) {
         core.setFailed(error.message);
