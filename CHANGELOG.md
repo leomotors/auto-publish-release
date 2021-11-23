@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [1.3.1] - 2021-11-23
+
+- Fixing Error of 1.3.0
+
 ## [1.3.0] - 2021-11-23
 
 - Added Version from Commit Count

@@ -3,8 +3,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
 const fs = require("fs").promises;
-const { promisify } = require("util");
-const exec = promisify(require("child_process").exec);
 
 async function getVersion_PackageJson() {
     const buffer = await fs.readFile("package.json");
@@ -55,21 +53,31 @@ async function run() {
     try {
         const ghToken = core.getInput("GITHUB_TOKEN");
         const octokit = github.getOctokit(ghToken);
-
         const versionSrc = core.getInput("VERSION_SOURCE") || "PACKAGE_JSON";
+        const { owner, repo } = github.context.repo;
 
         let version = "";
         if (versionSrc == "PACKAGE_JSON") {
             version = await getVersion_PackageJson();
         } else if (versionSrc == "COMMIT_COUNT") {
-            // * Get Number of Commits
-            const commitCount = (
-                await exec("git rev-list HEAD --count")
-            ).stdout.replace(/^\s+|\s+$/g, "");
+            const res = await octokit.request(
+                "/repos/{owner}/{repo}/contributors",
+                {
+                    owner,
+                    repo,
+                }
+            );
+
+            console.log(res.data);
+
+            let totalCommit = 0;
+            for (const contributor of res.data) {
+                totalCommit += contributor.contributions;
+            }
 
             version = `${
                 core.getInput("VERSION_MAJOR_MINOR") || "1.0"
-            }.${commitCount}`;
+            }.${totalCommit}`;
         } else {
             throw new Error(`Unknown Version Source of ${versionSrc}`);
         }
@@ -77,9 +85,6 @@ async function run() {
         if (!version) throw new Error(`Invalid Version: ${version}`);
 
         const prerelease = versionIsPrerelease(version);
-
-        const { owner, repo } = github.context.repo;
-
         const ReleaseName = `Release ${version}`;
 
         // * Get Current Date by GitHub Copilot
@@ -95,6 +100,7 @@ async function run() {
                 .replace("{VERSION}", version)
                 .replace("{DATE}", dateString);
 
+        // * Release Release
         await octokit.request("POST /repos/{owner}/{repo}/releases", {
             owner,
             repo,
