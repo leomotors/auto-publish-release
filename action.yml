@@ -14,6 +14,8 @@ inputs:
     description: "Where to get Version"
   VERSION_MAJOR_MINOR:
     description: "This must be given if VERSION_SOURCE is COMMIT_COUNT"
+  VERSION_MUST_INCREASE:
+    description: "Set Check as failed if version doesn't increase"
 
 runs:
   using: "node12"

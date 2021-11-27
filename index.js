@@ -103,15 +103,26 @@ async function run() {
             transform(core.getInput("RELEASE_TITLE")) || `Release ${version}`;
 
         // * Release Release
-        await octokit.request("POST /repos/{owner}/{repo}/releases", {
-            owner,
-            repo,
-            tag_name: version,
-            name: ReleaseName,
-            body,
-            prerelease,
-            generate_release_notes: !body,
-        });
+        try {
+            await octokit.request("POST /repos/{owner}/{repo}/releases", {
+                owner,
+                repo,
+                tag_name: version,
+                name: ReleaseName,
+                body,
+                prerelease,
+                generate_release_notes: !body,
+            });
+        } catch (error) {
+            if (error.code == "already_exists") {
+                console.log("Already Exists: ABORT");
+                return;
+            }
+
+            if (core.getInput("VERSION_MUST_INCREASE")) {
+                throw error;
+            }
+        }
     } catch (error) {
         core.setFailed(error.message);
     }
