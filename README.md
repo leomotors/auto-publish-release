@@ -32,4 +32,11 @@ jobs:
         uses: Leomotors/auto-publish-release@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # * Workflow fail if version does not *change*
+          # * Algorithm to compare version isn't implemented yet
+          # * And I have no idea on how to deal with GitHub API (Muck, where is documentation?)
+          VERSION_MUST_INCREASE: true
+
 ```
+
+**Note**: See [action.yml](./action.yml) for more info

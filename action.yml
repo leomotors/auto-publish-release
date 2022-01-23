@@ -16,6 +16,8 @@ inputs:
     description: "This must be given if VERSION_SOURCE is COMMIT_COUNT"
   VERSION_MUST_INCREASE:
     description: "Set Check as failed if version doesn't increase"
+  RELEASE_ON_KEYWORD:
+    description: "Pass github.event.commits[0].message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered"
 
 runs:
   using: "node12"

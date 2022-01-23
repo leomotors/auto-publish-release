@@ -56,6 +56,18 @@ async function run() {
         const versionSrc = core.getInput("VERSION_SOURCE") || "PACKAGE_JSON";
         const { owner, repo } = github.context.repo;
 
+        const commitMsg = core.getInput("RELEASE_ON_KEYWORD");
+
+        if (
+            commitMsg.length > 0 &&
+            !commitMsg.toLowerCase().includes("[release]")
+        ) {
+            core.info(
+                "RELEASE_ON_KEYWORD is activated, but no keywords found. ABORT"
+            );
+            return;
+        }
+
         let version = "";
         if (versionSrc == "PACKAGE_JSON") {
             version = await getVersion_PackageJson();
@@ -67,8 +79,6 @@ async function run() {
                     repo,
                 }
             );
-
-            console.log(res.data);
 
             let totalCommit = 0;
             for (const contributor of res.data) {
@@ -114,15 +124,23 @@ async function run() {
                 generate_release_notes: !body,
             });
         } catch (error) {
-            if (error.code == "already_exists") {
-                console.log("Already Exists: ABORT");
-                return;
-            }
+            const mustIncrease = core
+                .getInput("VERSION_MUST_INCREASE")
+                .toLowerCase()
+                .includes("true");
 
-            if (core.getInput("VERSION_MUST_INCREASE")) {
-                throw error;
+            if (error.message.includes("already_exists")) {
+                if (mustIncrease) {
+                    core.setFailed("Version did not increased as expected");
+                    return;
+                } else {
+                    core.info("Already Exists: ABORT");
+                    return;
+                }
             }
         }
+
+        core.info("Release Success");
     } catch (error) {
         core.setFailed(error.message);
     }

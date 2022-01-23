@@ -2,6 +2,12 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [1.4.0] - 2022-01-23
+
+- Fix error handling error (it should now work as intended)
+
+- New Parameter: RELEASE_ON_KEYWORD
+
 ## [1.3.3] - 2021-11-27
 
 - Now end its job quietly if already_exists
