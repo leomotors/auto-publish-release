@@ -68,8 +68,6 @@ async function run() {
                 }
             );
 
-            console.log(res.data);
-
             let totalCommit = 0;
             for (const contributor of res.data) {
                 totalCommit += contributor.contributions;
@@ -114,13 +112,20 @@ async function run() {
                 generate_release_notes: !body,
             });
         } catch (error) {
-            if (error.code == "already_exists") {
-                console.log("Already Exists: ABORT");
-                return;
-            }
+            console.log(error);
+            console.log("----------------------------");
+            console.log(typeof error);
 
-            if (core.getInput("VERSION_MUST_INCREASE")) {
-                throw error;
+            const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE");
+
+            if (error.status == "already_exists") {
+                if (mustIncrease) {
+                    core.setFailed("Version did not increased as expected");
+                    return;
+                } else {
+                    console.log("Already Exists: ABORT");
+                    return;
+                }
             }
         }
     } catch (error) {

@@ -1,6 +1,6 @@
 {
   "name": "auto-publish-release",
-  "version": "1.3.3",
+  "version": "1.3.4-pre.1",
   "description": "Create new Release on Push",
   "main": "index.js",
   "scripts": {
