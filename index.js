@@ -112,14 +112,17 @@ async function run() {
                 generate_release_notes: !body,
             });
         } catch (error) {
-            const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE");
+            const mustIncrease = core
+                .getInput("VERSION_MUST_INCREASE")
+                .toLowerCase()
+                .includes("true");
 
             if (error.message.includes("already_exists")) {
                 if (mustIncrease) {
                     core.setFailed("Version did not increased as expected");
                     return;
                 } else {
-                    console.log("Already Exists: ABORT");
+                    core.info("Already Exists: ABORT");
                     return;
                 }
             }
