@@ -114,7 +114,7 @@ async function run() {
         } catch (error) {
             const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE");
 
-            if (error.message.contains("already_exists")) {
+            if (error.message.includes("already_exists")) {
                 if (mustIncrease) {
                     core.setFailed("Version did not increased as expected");
                     return;
