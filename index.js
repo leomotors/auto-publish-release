@@ -112,15 +112,9 @@ async function run() {
                 generate_release_notes: !body,
             });
         } catch (error) {
-            console.log(error);
-            console.log("----------------------------");
-            console.log(typeof error);
-            console.log("----------------------------");
-            console.log({ code: error.code, message: error.message });
-
             const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE");
 
-            if (error.status == "already_exists") {
+            if (error.message.contains("already_exists")) {
                 if (mustIncrease) {
                     core.setFailed("Version did not increased as expected");
                     return;
