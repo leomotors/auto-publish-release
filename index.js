@@ -115,6 +115,8 @@ async function run() {
             console.log(error);
             console.log("----------------------------");
             console.log(typeof error);
+            console.log("----------------------------");
+            console.log({ code: error.code, message: error.message });
 
             const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE");
 
