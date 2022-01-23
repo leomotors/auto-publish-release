@@ -137,6 +137,9 @@ async function run() {
                     core.info("Already Exists: ABORT");
                     return;
                 }
+            } else {
+                // * Other Error, THROW IT
+                throw error;
             }
         }
 
