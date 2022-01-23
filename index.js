@@ -56,6 +56,18 @@ async function run() {
         const versionSrc = core.getInput("VERSION_SOURCE") || "PACKAGE_JSON";
         const { owner, repo } = github.context.repo;
 
+        const commitMsg = core.getInput("RELEASE_ON_KEYWORD");
+
+        if (
+            commitMsg.length > 0 &&
+            !commitMsg.toLowerCase().includes("[release]")
+        ) {
+            core.info(
+                "RELEASE_ON_KEYWORD is activated, but no keywords found. ABORT"
+            );
+            return;
+        }
+
         let version = "";
         if (versionSrc == "PACKAGE_JSON") {
             version = await getVersion_PackageJson();
