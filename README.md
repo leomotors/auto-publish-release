@@ -11,7 +11,6 @@ From .github/workflows/publish.yml of this Repo
 ```yml
 name: Publish Release
 
-# * Trigger (Release new Version) on every Push to main
 on:
   push:
     branches:
@@ -27,20 +26,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Publish Release
-        # * In case you really want to use this, using '@main' is not recommended
-        # * as breaking change can be made at anytime
         uses: Leomotors/auto-publish-release@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # * Workflow fail if version does not *change*
-          # * Algorithm to compare version isn't implemented yet
-          # * And I have no idea on how to deal with GitHub API (Muck, where is documentation?)
-          VERSION_MUST_INCREASE: true
           RELEASE_TITLE: "Auto Publish Release {VERSION}"
+          VERSION_MUST_INCREASE: true
           ALWAYS_GENERATE_NOTES: true
 ```
 
-**Note**: See [action.yml](./action.yml) for more info
+**Note**: See [template.yml](./example/template.yml) for all parameters
 
 ## 📚 Available Features
 

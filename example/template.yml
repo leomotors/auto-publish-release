@@ -1,0 +1,50 @@
+# * Template for Auto Publish Release with all parameter
+# ! You will definitely need to remove some of parameter to make it work
+
+name: Publish Release
+
+# * Trigger (Release new Version) on every Push to main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  main:
+    name: Publish Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Publish Release
+        # * In case you really want to use this, using '@main' is not recommended
+        # * as breaking change can be made at anytime
+        uses: Leomotors/auto-publish-release@main
+        with:
+          # * GitHub Token, This is REQUIRED and is the only required parameter
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # * Default Title is "Release {VERSION}" Pass this parameter to override that
+          RELEASE_TITLE: "Auto Publish Release {VERSION}"
+
+          # * Default is either empty, or from CHANGELOG.md if exists, pass this parameter to override
+          CHANGELOG_BODY: "Published at {DATE}"
+
+          # * For projects not containing package.json, you can use commit counts as version
+          VERSION_SOURCE: "COMMIT_COUNT"
+
+          # * My version naming convention is "MAJOR.MINOR.COMMIT_COUNT"
+          VERSION_MAJOR_MINOR: "1.0"
+
+          # * Workflow fail if version does not *change*
+          # * Algorithm to compare version isn't implemented yet
+          # * And I have no idea on how to deal with GitHub API (Muck, where is documentation?)
+          VERSION_MUST_INCREASE: true
+
+          # * Pass github.event.commits[0].message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered
+          RELEASE_ON_KEYWORD: ${{ github.event.commits[0].message }}
+          
+          # * Always generate release notes (by GitHub) no matter changelog do exists or not
+          ALWAYS_GENERATE_NOTES: true
