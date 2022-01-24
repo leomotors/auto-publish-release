@@ -25,3 +25,5 @@ jobs:
           # * Algorithm to compare version isn't implemented yet
           # * And I have no idea on how to deal with GitHub API (Muck, where is documentation?)
           VERSION_MUST_INCREASE: true
+          RELEASE_TITLE: "Auto Publish Release {VERSION}"
+          ALWAYS_GENERATE_NOTES: true

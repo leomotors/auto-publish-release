@@ -49,6 +49,12 @@ async function getChangelog(version) {
     }
 }
 
+function getBoolean(core, name, defaultValue = true) {
+    const value = core.getInput(name);
+    if (value) return value.toLowerCase().includes("true");
+    return defaultValue;
+}
+
 async function run() {
     try {
         const ghToken = core.getInput("GITHUB_TOKEN");
@@ -112,6 +118,8 @@ async function run() {
         const ReleaseName =
             transform(core.getInput("RELEASE_TITLE")) || `Release ${version}`;
 
+        const alwaysGenerate = getBoolean(core, "ALWAYS_GENERATE_NOTES");
+
         // * Release Release
         try {
             await octokit.request("POST /repos/{owner}/{repo}/releases", {
@@ -121,13 +129,10 @@ async function run() {
                 name: ReleaseName,
                 body,
                 prerelease,
-                generate_release_notes: !body,
+                generate_release_notes: !body || alwaysGenerate,
             });
         } catch (error) {
-            const mustIncrease = core
-                .getInput("VERSION_MUST_INCREASE")
-                .toLowerCase()
-                .includes("true");
+            const mustIncrease = getBoolean(core, "VERSION_MUST_INCREASE");
 
             if (error.message.includes("already_exists")) {
                 if (mustIncrease) {

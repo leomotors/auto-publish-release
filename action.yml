@@ -6,10 +6,10 @@ inputs:
   GITHUB_TOKEN:
     description: "GitHub Token"
     required: true
-  CHANGELOG_BODY:
-    description: "Changelog Body when CHANGELOG.md doesn't exist"
   RELEASE_TITLE:
     description: "Override Changelog Title"
+  CHANGELOG_BODY:
+    description: "Changelog Body when CHANGELOG.md doesn't exist"
   VERSION_SOURCE:
     description: "Where to get Version"
   VERSION_MAJOR_MINOR:
@@ -18,7 +18,9 @@ inputs:
     description: "Set Check as failed if version doesn't increase"
   RELEASE_ON_KEYWORD:
     description: "Pass github.event.commits[0].message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered"
+  ALWAYS_GENERATE_NOTES:
+    description: "When set to true, always generate release notes (by GitHub)"
 
 runs:
-  using: "node12"
+  using: "node16"
   main: "index.js"
