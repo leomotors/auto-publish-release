@@ -37,6 +37,7 @@ async function getChangelog(version) {
             if (startlevel) {
                 if (
                     line.startsWith("#".repeat(startlevel)) &&
+                    !line.startsWith("#".repeat(startlevel + 1)) &&
                     !line.includes(version)
                 )
                     return body;
