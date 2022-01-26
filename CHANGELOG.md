@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [1.5.0] - 2022-01-26
+
+- Default value of all boolean input is now false
+
 ## [1.4.3] - 2022-01-25
 
 - Fixed some bug reading CHANGELOG.md

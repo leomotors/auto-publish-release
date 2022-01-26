@@ -1,6 +1,6 @@
 name: Publish Release by Looking at package.json (is this name unique enough?)
 author: Leomotors
-description: Publish New Release by Looking at package.json
+description: Create New Release by looking at package.json
 
 inputs:
   GITHUB_TOKEN:

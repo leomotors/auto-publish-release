@@ -50,7 +50,7 @@ async function getChangelog(version) {
     }
 }
 
-function getBoolean(core, name, defaultValue = true) {
+function getBoolean(core, name, defaultValue = false) {
     const value = core.getInput(name);
     if (value) return value.toLowerCase().includes("true");
     return defaultValue;
@@ -151,7 +151,7 @@ async function run() {
 
         core.info("Release Success");
     } catch (error) {
-        core.setFailed(error.message);
+        core.setFailed(`Unexpected ERROR: ${error.message}`);
     }
 }
 

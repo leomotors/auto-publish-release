@@ -1,7 +1,7 @@
 {
   "name": "auto-publish-release",
-  "version": "1.4.3",
-  "description": "Create new Release on Push",
+  "version": "1.5.0",
+  "description": "Create New Release by looking at package.json",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
