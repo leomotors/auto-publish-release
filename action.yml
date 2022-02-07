@@ -17,7 +17,7 @@ inputs:
   VERSION_MUST_INCREASE:
     description: "Set Check as failed if version doesn't increase"
   RELEASE_ON_KEYWORD:
-    description: "Pass github.event.commits[0].message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered"
+    description: "Pass github.event.head_commit.message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered"
   ALWAYS_GENERATE_NOTES:
     description: "When set to true, always generate release notes (by GitHub)"
 
