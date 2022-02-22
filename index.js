@@ -29,6 +29,7 @@ async function getChangelog(version) {
         let body = "";
 
         let startlevel = 0;
+        let started = false;
         for (const line of lines) {
             if (line.startsWith("#") && line.includes(version)) {
                 startlevel = line.split("").filter((c) => c == "#").length;
@@ -38,10 +39,11 @@ async function getChangelog(version) {
                 if (
                     line.startsWith("#".repeat(startlevel)) &&
                     !line.startsWith("#".repeat(startlevel + 1)) &&
-                    !line.includes(version)
+                    started
                 )
                     return body;
                 body += line + "\n";
+                started = true;
             }
         }
         return body;

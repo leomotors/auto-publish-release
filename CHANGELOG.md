@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [1.5.2] - 2022-02-22
+
+- Fix Bug when parsing Changelog
+
 ## [1.5.1] - 2022-02-07
 
 - Update Description
