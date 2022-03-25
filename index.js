@@ -23,7 +23,11 @@ async function getVersion_PackageJson() {
  * @returns {boolean}
  */
 function versionIsPrerelease(version) {
-    if (version.startsWith("0")) return true;
+    if (
+        version.startsWith("0") &&
+        !core.getBooleanInput("LEADING_ZERO_IS_RELEASE")
+    )
+        return true;
 
     for (const kw of ["alpha", "beta", "dev", "pre", "rc", "insider", "next"])
         if (version.includes(kw)) return true;

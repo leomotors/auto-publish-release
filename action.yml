@@ -20,6 +20,8 @@ inputs:
     description: "Pass github.event.head_commit.message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered"
   ALWAYS_GENERATE_NOTES:
     description: "When set to true, always generate release notes (by GitHub)"
+  LEADING_ZERO_IS_RELEASE:
+    description: "When set to true, version with leading zero (without pre-release keywords) is considered as release"
 
 runs:
   using: "node16"

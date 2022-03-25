@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [1.6.1] - 2022-03-25
+
+- Added option to turn off feature from previous release
+
 ## [1.6.0] - 2022-03-25
 
 - Leading Zero are considered as Pre-release

@@ -2,7 +2,7 @@
 
 Publish Release on Push with tag name from package.json
 
-**Note**: This Action is created for personal use, any breaking changes can be made. You may use this if you want to do the same thing as mine.
+**Note**: This Action is created for personal use, any breaking changes can be made. You may use this if you want to do the same thing.
 
 ## Example: My Usage
 

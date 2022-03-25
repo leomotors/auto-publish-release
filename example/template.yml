@@ -48,3 +48,6 @@ jobs:
           
           # * Always generate release notes (by GitHub) no matter changelog do exists or not
           ALWAYS_GENERATE_NOTES: true
+
+          # * Set to true to allow versions like 0.1.0 to be full release
+          LEADING_ZERO_IS_RELEASE: false

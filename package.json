@@ -1,6 +1,6 @@
 {
   "name": "auto-publish-release",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Create New Release by looking at package.json",
   "main": "index.js",
   "scripts": {
