@@ -17,7 +17,7 @@ inputs:
   LEADING_ZERO_IS_RELEASE:
     description: "When set to true, version with leading zero (without pre-release keywords) is considered as release"
   TAG:
-    description: "NEW and EXPERIMENTAL: Pass ${{ github.ref }} to this"
+    description: "NEW and EXPERIMENTAL: Pass github.ref to this"
 
   VERSION_SOURCE:
     description: "!!!DEPRECATED OPTION!!!"
