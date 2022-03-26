@@ -19,5 +19,3 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TITLE: "Auto Publish Release {VERSION}"
-          VERSION_MUST_INCREASE: true
-          ALWAYS_GENERATE_NOTES: true

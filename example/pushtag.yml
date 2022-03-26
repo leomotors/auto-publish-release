@@ -3,11 +3,11 @@
 
 name: Publish Release
 
-# * Trigger (Release new Version) on every Push to main
+# * Trigger on Tag Push
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "*.*"
 
 jobs:
   main:
@@ -36,8 +36,8 @@ jobs:
           # * Algorithm to compare version isn't implemented yet
           VERSION_MUST_INCREASE: true
 
-          # * Pass github.event.commits[0].message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered
-          RELEASE_ON_KEYWORD: ${{ github.event.commits[0].message }}
-
           # * Set to true to allow versions like 0.1.0 to be full release
           LEADING_ZERO_IS_RELEASE: false
+
+          # * Use this when using on push tag
+          TAG: ${{ github.ref }}

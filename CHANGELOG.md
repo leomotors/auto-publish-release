@@ -1,6 +1,14 @@
-# Change Log
+# Changelog
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
+
+## [2.0.0] - 2022-03-26
+
+- Many options are removed
+
+- Added support for push tag
+
+- Added support for setup.cfg
 
 ## [1.6.1] - 2022-03-25
 

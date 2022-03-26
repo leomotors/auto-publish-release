@@ -5,17 +5,40 @@ const github = require("@actions/github");
 const fs = require("fs").promises;
 
 /**
- * @returns {Promise<string>}
+ * @returns {Promise<string | null>}
  */
 async function getVersion_PackageJson() {
-    const buffer = await fs.readFile("package.json");
-    const package_data = JSON.parse(buffer.toString());
-    const version = package_data.version;
+    try {
+        const buffer = await fs.readFile("package.json");
+        const package_data = JSON.parse(buffer.toString());
+        const version = package_data.version;
 
-    // * X.Y.Z => 5..
-    if (version.length < 5) throw new Error("Invalid Version");
+        // * X.Y.Z => 5..
+        if (version.length < 5) throw new Error("Invalid Version");
 
-    return version;
+        return version;
+    } catch (err) {
+        return null;
+    }
+}
+
+/**
+ * @returns {Promise<string | null>}
+ */
+async function getVersion_setupCfg() {
+    try {
+        const lines = (await fs.readFile("setup.cfg")).toString().split("\n");
+        for (const line of lines) {
+            const tokens = line.split("=");
+            if (tokens.length != 2) continue;
+
+            if (tokens[0].trim().toLowerCase() == "version") {
+                return tokens[1].trim();
+            }
+        }
+    } catch (err) {}
+
+    return null;
 }
 
 /**
@@ -29,7 +52,16 @@ function versionIsPrerelease(version) {
     )
         return true;
 
-    for (const kw of ["alpha", "beta", "dev", "pre", "rc", "insider", "next"])
+    for (const kw of [
+        "alpha",
+        "beta",
+        "dev",
+        "pre",
+        "rc",
+        "insider",
+        "next",
+        "experi",
+    ])
         if (version.includes(kw)) return true;
     return false;
 }
@@ -40,8 +72,9 @@ function versionIsPrerelease(version) {
  */
 async function getChangelog(version) {
     try {
-        const buffer = await fs.readFile("CHANGELOG.md");
-        const lines = buffer.toString().split("\n");
+        const lines = (await fs.readFile("CHANGELOG.md"))
+            .toString()
+            .split("\n");
 
         let body = "";
 
@@ -72,7 +105,6 @@ async function getChangelog(version) {
 async function run() {
     const ghToken = core.getInput("GITHUB_TOKEN");
     const octokit = github.getOctokit(ghToken);
-    const versionSrc = core.getInput("VERSION_SOURCE") || "PACKAGE_JSON";
     const { owner, repo } = github.context.repo;
 
     const commitMsg = core.getInput("RELEASE_ON_KEYWORD");
@@ -87,29 +119,9 @@ async function run() {
         return;
     }
 
-    let version = "";
-    if (versionSrc == "PACKAGE_JSON") {
-        version = await getVersion_PackageJson();
-    } else if (versionSrc == "COMMIT_COUNT") {
-        const res = await octokit.request(
-            "/repos/{owner}/{repo}/contributors",
-            {
-                owner,
-                repo,
-            }
-        );
-
-        let totalCommit = 0;
-        for (const contributor of res.data) {
-            totalCommit += contributor.contributions;
-        }
-
-        version = `${
-            core.getInput("VERSION_MAJOR_MINOR") || "1.0"
-        }.${totalCommit}`;
-    } else {
-        throw new Error(`Unknown Version Source of ${versionSrc}`);
-    }
+    let version =
+        (core.getInput("tag") || (await getVersion_PackageJson())) ??
+        (await getVersion_setupCfg());
 
     if (!version) throw new Error(`Invalid Version: ${version}`);
 
@@ -121,6 +133,7 @@ async function run() {
         date.getMonth() + 1
     }-${date.getDate()}`;
 
+    /** @type {(str: string) => string} */
     const transform = (str) =>
         str.replace("{VERSION}", version).replace("{DATE}", dateString);
 
@@ -131,8 +144,6 @@ async function run() {
     const ReleaseName =
         transform(core.getInput("RELEASE_TITLE")) || `Release ${version}`;
 
-    const alwaysGenerate = core.getBooleanInput("ALWAYS_GENERATE_NOTES");
-
     // * Release Release
     await octokit
         .request("POST /repos/{owner}/{repo}/releases", {
@@ -142,10 +153,12 @@ async function run() {
             name: ReleaseName,
             body,
             prerelease,
-            generate_release_notes: !body || alwaysGenerate,
+            generate_release_notes: true,
         })
         .catch((error) => {
-            const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE");
+            const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE", {
+                required: false,
+            });
 
             if (error.message.includes("already_exists")) {
                 if (mustIncrease) {
@@ -155,10 +168,10 @@ async function run() {
                     core.info("Already Exists: ABORT");
                     return;
                 }
-            } else {
-                // * Other Error, THROW IT
-                throw error;
             }
+
+            // * Other Error, THROW IT
+            throw error;
         });
 
     core.info("Release Success");
