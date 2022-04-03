@@ -48,7 +48,7 @@ async function getVersion_setupCfg() {
 function versionIsPrerelease(version) {
     if (
         version.startsWith("0") &&
-        !core.getBooleanInput("LEADING_ZERO_IS_RELEASE")
+        !core.getBooleanInput("LEADING_ZERO_IS_RELEASE", { required: false })
     )
         return true;
 

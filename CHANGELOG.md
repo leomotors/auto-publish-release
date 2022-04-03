@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [2.0.1] - 2022-04-03
+
+- Fixing bug (that I found on production)
+
 ## [2.0.0] - 2022-03-26
 
 - Many options are removed
