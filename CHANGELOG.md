@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [2.0.3-2.0.4] - 2022-04-20
+
+- Test Commits, no changes
+
 ## [2.0.2] - 2022-04-20
 
 - Now warn if deprecated options are passed
