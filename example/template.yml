@@ -1,5 +1,5 @@
-# * Template for Auto Publish Release with all parameter
-# ! You will definitely need to remove some of parameter to make it work
+# * Template for Auto Publish Release with all parameters
+# ! You will definitely need to remove some of parameters to make it work
 
 name: Publish Release
 

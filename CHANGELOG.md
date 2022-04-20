@@ -2,6 +2,12 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [2.0.2] - 2022-04-20
+
+- Now warn if deprecated options are passed
+
+- Fix wrong version name from tag source
+
 ## [2.0.1] - 2022-04-03
 
 - Fixing bug (that I found on production)

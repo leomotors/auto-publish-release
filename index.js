@@ -102,7 +102,18 @@ async function getChangelog(version) {
     }
 }
 
+/** @param {string} key */
+function checkDep(key) {
+    if (core.getInput(key)) {
+        core.warning(`${key} option is deprecated but recieved!`);
+    }
+}
+
 async function run() {
+    ["VERSION_SOURCE", "VERSION_MAJOR_MINOR", "ALWAYS_GENERATE_NOTES"].forEach(
+        (k) => checkDep(k)
+    );
+
     const ghToken = core.getInput("GITHUB_TOKEN");
     const octokit = github.getOctokit(ghToken);
     const { owner, repo } = github.context.repo;
@@ -120,7 +131,8 @@ async function run() {
     }
 
     let version =
-        (core.getInput("tag") || (await getVersion_PackageJson())) ??
+        (core.getInput("tag")?.split("/")?.at(-1) ||
+            (await getVersion_PackageJson())) ??
         (await getVersion_setupCfg());
 
     if (!version) throw new Error(`Invalid Version: ${version}`);
