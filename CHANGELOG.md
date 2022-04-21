@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [2.1.0] - 2022-04-21
+
+- LEADING_ZERO_IS_RELEASE is now default to `true`
+
 ## [2.0.5] - 2022-04-21
 
 - Fix getBoolean Bug
