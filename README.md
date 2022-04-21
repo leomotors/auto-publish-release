@@ -1,12 +1,42 @@
 # Auto Publish Release
 
-Publish Release on Push with tag name from package.json
+~~Publish Release on Push with tag name from package.json~~ <- Before
+
+Now -> Create release on push tags, pretty much similar to Evan You's
 
 **Note**: This Action is created for personal use, any breaking changes can be made. You may use this if you want to do the same thing.
 
 ## Example: My Usage
 
 From .github/workflows/publish.yml of this Repo
+
+```yml
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "*.*"
+
+jobs:
+  main:
+    name: Publish Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Publish Release
+        uses: Leomotors/auto-publish-release@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TITLE: "Auto Publish Release {VERSION}"
+          VERSION_MUST_INCREASE: true
+          TAG: ${{ github.ref }}
+```
+
+*Legacy: Before it was changed to 'push tag' meta*
 
 ```yml
 name: Publish Release
@@ -34,7 +64,7 @@ jobs:
           ALWAYS_GENERATE_NOTES: true
 ```
 
-**Note**: See [template.yml](./example/template.yml) for all parameters
+**Note**: See [example](./example) for all parameters
 
 ## 📚 Available Features
 

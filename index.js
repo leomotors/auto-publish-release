@@ -48,7 +48,7 @@ async function getVersion_setupCfg() {
 function versionIsPrerelease(version) {
     if (
         version.startsWith("0") &&
-        !core.getBooleanInput("LEADING_ZERO_IS_RELEASE", { required: false })
+        !core.getBooleanInput("LEADING_ZERO_IS_RELEASE")
     )
         return true;
 
@@ -168,9 +168,7 @@ async function run() {
             generate_release_notes: true,
         })
         .catch((error) => {
-            const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE", {
-                required: false,
-            });
+            const mustIncrease = core.getBooleanInput("VERSION_MUST_INCREASE");
 
             if (error.message.includes("already_exists")) {
                 if (mustIncrease) {
