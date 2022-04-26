@@ -61,6 +61,7 @@ function versionIsPrerelease(version) {
         "insider",
         "next",
         "experi",
+        "test",
     ])
         if (version.includes(kw)) return true;
     return false;
