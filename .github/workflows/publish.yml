@@ -21,5 +21,3 @@ jobs:
           RELEASE_TITLE: "Auto Publish Release {VERSION}"
           VERSION_MUST_INCREASE: true
           TAG: ${{ github.ref }}
-          ARG: ${{ github.event.base_ref }}
-          ARG2: ${{ github.base_ref }}

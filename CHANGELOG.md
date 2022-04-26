@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [2.1.1] - 2022-04-26
+
+- Add test to pre-release keywords
+
 ## [2.1.0] - 2022-04-21
 
 - LEADING_ZERO_IS_RELEASE is now default to `true`

@@ -1,6 +1,6 @@
 {
   "name": "auto-publish-release",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "My personal workflows for publishing release",
   "main": "index.js",
   "scripts": {
