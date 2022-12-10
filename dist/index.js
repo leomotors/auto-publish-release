@@ -21,48 +21,74 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __importDefault(__nccwpck_require__(8686));
 const github_1 = __importDefault(__nccwpck_require__(7481));
+const utils_1 = __nccwpck_require__(4738);
+var Input;
+(function (Input) {
+    Input["githubToken"] = "githubToken";
+    Input["tag"] = "tag";
+    Input["title"] = "title";
+    Input["zeroIsPreRelease"] = "zeroIsPreRelease";
+    Input["testMode"] = "testMode";
+})(Input || (Input = {}));
+function run() {
+    var _a, _b, _c;
+    return __awaiter(this, void 0, void 0, function* () {
+        const ghToken = core_1.default.getInput(Input.githubToken);
+        const octokit = github_1.default.getOctokit(ghToken);
+        const { owner, repo } = github_1.default.context.repo;
+        const version = (_b = (_a = core_1.default.getInput(Input.tag)) === null || _a === void 0 ? void 0 : _a.split("/")) === null || _b === void 0 ? void 0 : _b.at(-1);
+        if (!version)
+            throw new Error(`Invalid Version: ${version}`);
+        const prerelease = (0, utils_1.isPrerelease)(version, core_1.default.getBooleanInput(Input.zeroIsPreRelease));
+        const body = (_c = (yield (0, utils_1.getChangelog)(version))) !== null && _c !== void 0 ? _c : "";
+        const ReleaseName = `${core_1.default.getInput(Input.title) || "Release"} ${version}`;
+        const postBody = {
+            owner,
+            repo,
+            tag_name: version,
+            name: ReleaseName,
+            body,
+            prerelease,
+            generate_release_notes: true,
+        };
+        if (core_1.default.getBooleanInput(Input.testMode)) {
+            core_1.default.debug(JSON.stringify(postBody, null, 2));
+        }
+        else {
+            yield octokit.request("POST /repos/{owner}/{repo}/releases", postBody);
+            core_1.default.info(`Release version ${version} success`);
+        }
+    });
+}
+run().catch((error) => {
+    core_1.default.setFailed(`Unexpected ERROR: ${error.message}`);
+});
+
+
+/***/ }),
+
+/***/ 4738:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getChangelog = exports.isPrerelease = void 0;
 const promises_1 = __importDefault(__nccwpck_require__(3977));
-function getVersion_PackageJson() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const buffer = yield promises_1.default.readFile("package.json");
-            const package_data = JSON.parse(buffer.toString());
-            const version = package_data.version;
-            // * X.Y.Z => 5..
-            if (version.length < 5)
-                throw new Error("Invalid Version");
-            return version;
-        }
-        catch (err) {
-            return null;
-        }
-    });
-}
-/**
- * @returns {Promise<string | null>}
- */
-function getVersion_setupCfg() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const lines = (yield promises_1.default.readFile("setup.cfg")).toString().split("\n");
-            for (const line of lines) {
-                const tokens = line.split("=");
-                if (tokens.length !== 2)
-                    continue;
-                if (tokens[0].trim().toLowerCase() === "version") {
-                    return tokens[1].trim();
-                }
-            }
-        }
-        catch (err) {
-            // pass
-        }
-        return null;
-    });
-}
-function versionIsPrerelease(version) {
-    if (version.startsWith("0") &&
-        !core_1.default.getBooleanInput("LEADING_ZERO_IS_RELEASE"))
+function isPrerelease(version, zeroIsPreRelease) {
+    if (version.startsWith("0") && zeroIsPreRelease)
         return true;
     for (const kw of [
         "alpha",
@@ -79,6 +105,7 @@ function versionIsPrerelease(version) {
             return true;
     return false;
 }
+exports.isPrerelease = isPrerelease;
 function getChangelog(version) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -106,66 +133,7 @@ function getChangelog(version) {
         }
     });
 }
-function checkDep(key) {
-    if (core_1.default.getInput(key)) {
-        core_1.default.warning(`${key} option is deprecated but recieved!`);
-    }
-}
-function run() {
-    var _a, _b, _c;
-    return __awaiter(this, void 0, void 0, function* () {
-        ["VERSION_SOURCE", "VERSION_MAJOR_MINOR", "ALWAYS_GENERATE_NOTES"].forEach((k) => checkDep(k));
-        const ghToken = core_1.default.getInput("GITHUB_TOKEN");
-        const octokit = github_1.default.getOctokit(ghToken);
-        const { owner, repo } = github_1.default.context.repo;
-        const commitMsg = core_1.default.getInput("RELEASE_ON_KEYWORD");
-        if (commitMsg.length > 0 && !commitMsg.toLowerCase().includes("[release]")) {
-            core_1.default.info("RELEASE_ON_KEYWORD is activated, but no keywords found. ABORT");
-            return;
-        }
-        const version = (_c = (((_b = (_a = core_1.default.getInput("tag")) === null || _a === void 0 ? void 0 : _a.split("/")) === null || _b === void 0 ? void 0 : _b.at(-1)) ||
-            (yield getVersion_PackageJson()))) !== null && _c !== void 0 ? _c : (yield getVersion_setupCfg());
-        if (!version)
-            throw new Error(`Invalid Version: ${version}`);
-        const prerelease = versionIsPrerelease(version);
-        // * Get Current Date by GitHub Copilot
-        const date = new Date();
-        const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-        const transform = (str) => str.replace("{VERSION}", version).replace("{DATE}", dateString);
-        const body = (yield getChangelog(version)) || transform(core_1.default.getInput("CHANGELOG_BODY"));
-        const ReleaseName = transform(core_1.default.getInput("RELEASE_TITLE")) || `Release ${version}`;
-        // * Release Release
-        yield octokit
-            .request("POST /repos/{owner}/{repo}/releases", {
-            owner,
-            repo,
-            tag_name: version,
-            name: ReleaseName,
-            body,
-            prerelease,
-            generate_release_notes: true,
-        })
-            .catch((error) => {
-            const mustIncrease = core_1.default.getBooleanInput("VERSION_MUST_INCREASE");
-            if (error.message.includes("already_exists")) {
-                if (mustIncrease) {
-                    core_1.default.setFailed("Version did not increased as expected");
-                    return;
-                }
-                else {
-                    core_1.default.info("Already Exists: ABORT");
-                    return;
-                }
-            }
-            // * Other Error, THROW IT
-            throw error;
-        });
-        core_1.default.info("Release Success");
-    });
-}
-run().catch((error) => {
-    core_1.default.setFailed(`Unexpected ERROR: ${error.message}`);
-});
+exports.getChangelog = getChangelog;
 
 
 /***/ }),
