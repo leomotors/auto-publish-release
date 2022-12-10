@@ -6,6 +6,29 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,12 +38,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __importDefault(__nccwpck_require__(8686));
-const github_1 = __importDefault(__nccwpck_require__(7481));
+const core = __importStar(__nccwpck_require__(8686));
+const github = __importStar(__nccwpck_require__(7481));
 const utils_1 = __nccwpck_require__(4738);
 var Input;
 (function (Input) {
@@ -33,15 +53,15 @@ var Input;
 function run() {
     var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
-        const ghToken = core_1.default.getInput(Input.githubToken);
-        const octokit = github_1.default.getOctokit(ghToken);
-        const { owner, repo } = github_1.default.context.repo;
-        const version = (_b = (_a = core_1.default.getInput(Input.tag)) === null || _a === void 0 ? void 0 : _a.split("/")) === null || _b === void 0 ? void 0 : _b.at(-1);
+        const ghToken = core.getInput(Input.githubToken);
+        const octokit = github.getOctokit(ghToken);
+        const { owner, repo } = github.context.repo;
+        const version = (_b = (_a = core.getInput(Input.tag)) === null || _a === void 0 ? void 0 : _a.split("/")) === null || _b === void 0 ? void 0 : _b.at(-1);
         if (!version)
             throw new Error(`Invalid Version: ${version}`);
-        const prerelease = (0, utils_1.isPrerelease)(version, core_1.default.getBooleanInput(Input.zeroIsPreRelease));
+        const prerelease = (0, utils_1.isPrerelease)(version, core.getBooleanInput(Input.zeroIsPreRelease));
         const body = (_c = (yield (0, utils_1.getChangelog)(version))) !== null && _c !== void 0 ? _c : "";
-        const ReleaseName = `${core_1.default.getInput(Input.title) || "Release"} ${version}`;
+        const ReleaseName = `${core.getInput(Input.title) || "Release"} ${version}`;
         const postBody = {
             owner,
             repo,
@@ -51,17 +71,17 @@ function run() {
             prerelease,
             generate_release_notes: true,
         };
-        if (core_1.default.getBooleanInput(Input.testMode)) {
-            core_1.default.debug(JSON.stringify(postBody, null, 2));
+        if (core.getBooleanInput(Input.testMode)) {
+            core.debug(JSON.stringify(postBody, null, 2));
         }
         else {
             yield octokit.request("POST /repos/{owner}/{repo}/releases", postBody);
-            core_1.default.info(`Release version ${version} success`);
+            core.info(`Release version ${version} success`);
         }
     });
 }
 run().catch((error) => {
-    core_1.default.setFailed(`Unexpected ERROR: ${error.message}`);
+    core.setFailed(`Unexpected ERROR: ${error.message}`);
 });
 
 
