@@ -13,7 +13,7 @@
     "all": "pnpm build && pnpm lint && pnpm test && pnpm package"
   },
   "engines": {
-    "node": "^18.12.0",
+    "node": "^16.13.0",
     "pnpm": "^7"
   },
   "dependencies": {

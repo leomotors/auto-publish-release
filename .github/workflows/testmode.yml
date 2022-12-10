@@ -1,4 +1,4 @@
-name: Publish Release
+name: Test
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Publish Release
+      - name: Publish Release Test Mode
         uses: ./
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
