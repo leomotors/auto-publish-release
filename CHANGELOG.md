@@ -2,6 +2,15 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [3.0.0] - 2022-12-10
+
+First Release after almost 8 months? 🤔  
+This release is major refactor of this library
+
+- Convert to TypeScript with actions/typescript template
+- Many inputs have been removed and renamed, check action.yml
+- Legacy functions ex. read from package.json is now removed, only push tag
+
 ## [2.1.1] - 2022-04-26
 
 - Add test to pre-release keywords

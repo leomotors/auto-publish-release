@@ -3,31 +3,17 @@ author: Leomotors
 description: Create New Release by looking at package.json
 
 inputs:
-  GITHUB_TOKEN:
-    description: "GitHub Token"
+  githubToken:
+    description: "Pass secrets.GITHUB_TOKEN to this"
     required: true
-  RELEASE_TITLE:
-    description: "Override Changelog Title"
-  CHANGELOG_BODY:
-    description: "Changelog Body WHEN CHANGELOG.md doesn't exist"
-  VERSION_MUST_INCREASE:
-    description: "Set Check as fail if publish failed because the release already exists"
-    default: true
-  RELEASE_ON_KEYWORD:
-    description: "Pass github.event.head_commit.message to this parameter to activate the feature, once activated, only commit message consists of [RELEASE] will be considered"
-  LEADING_ZERO_IS_RELEASE:
-    description: "When set to true, version with leading zero (without pre-release keywords) is considered as release"
-    default: true
-  TAG:
+  tag:
     description: "Pass github.ref to this"
-
-  VERSION_SOURCE:
-    description: "!!!DEPRECATED OPTION!!!"
-  VERSION_MAJOR_MINOR:
-    description: "!!!DEPRECATED OPTION!!!"
-  ALWAYS_GENERATE_NOTES:
-    description: "!!!DEPRECATED OPTION!!!"
+  title:
+    description: "Title of Release"
+  zeroIsPreRelease:
+    description: "Mark version leading with zero to be pre-release"
+    default: false
 
 runs:
-  using: "node16"
-  main: "index.js"
+  using: "node18"
+  main: "dist/index.js"

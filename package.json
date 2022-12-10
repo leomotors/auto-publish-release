@@ -9,7 +9,8 @@
     "package": "ncc build --source-map",
     "lint": "eslint src",
     "format": "eslint src --fix",
-    "all": "pnpm build && pnpm lint && pnpm package"
+    "test": "vitest run",
+    "all": "pnpm build && pnpm lint && pnpm test && pnpm package"
   },
   "engines": {
     "node": "^18.12.0",
@@ -29,6 +30,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "vitest": "^0.25.6"
   }
 }
