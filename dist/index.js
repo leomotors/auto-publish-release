@@ -72,7 +72,8 @@ function run() {
             generate_release_notes: true,
         };
         if (core.getBooleanInput(Input.testMode)) {
-            core.debug(JSON.stringify(postBody, null, 2));
+            core.info(JSON.stringify(postBody, null, 2));
+            core.info("Test Mode Completed");
         }
         else {
             yield octokit.request("POST /repos/{owner}/{repo}/releases", postBody);

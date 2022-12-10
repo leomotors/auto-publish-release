@@ -39,7 +39,8 @@ async function run() {
   };
 
   if (core.getBooleanInput(Input.testMode)) {
-    core.debug(JSON.stringify(postBody, null, 2));
+    core.info(JSON.stringify(postBody, null, 2));
+    core.info("Test Mode Completed");
   } else {
     await octokit.request("POST /repos/{owner}/{repo}/releases", postBody);
     core.info(`Release version ${version} success`);
