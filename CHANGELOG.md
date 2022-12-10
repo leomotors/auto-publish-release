@@ -108,3 +108,15 @@ This release is major refactor of this library
 ## [1.0.0] - 2021-09-27
 
 - Initial release
+
+Below are used for testing
+
+## [0.0.0-experimental.0] - Test Mode
+
+- For Test Mode
+
+### lorem ipsum
+
+- Test Test
+
+## Should not be included in test mode
