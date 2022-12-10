@@ -1,10 +1,6 @@
 # Auto Publish Release
 
-~~Publish Release on Push with tag name from package.json~~ <- Before
-
-Now -> Create release on push tags, pretty much similar to Evan You's
-
-**Note**: This Action is created for personal use, any breaking changes can be made. You may use this if you want to do the same thing.
+Create release when new tag is pushed, automatically grab changelog from CHANGELOG.md
 
 ## Example: My Usage
 
@@ -25,60 +21,12 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Publish Release
         uses: Leomotors/auto-publish-release@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TITLE: "Auto Publish Release {VERSION}"
-          VERSION_MUST_INCREASE: true
-          TAG: ${{ github.ref }}
-```
-
-*Legacy: Before it was changed to 'push tag' meta*
-
-```yml
-name: Publish Release
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  main:
-    name: Publish Release
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Publish Release
-        uses: Leomotors/auto-publish-release@main
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TITLE: "Auto Publish Release {VERSION}"
-          VERSION_MUST_INCREASE: true
-          ALWAYS_GENERATE_NOTES: true
-```
-
-**Note**: See [example](./example) for all parameters
-
-## 📚 Available Features
-
-Documentation so I don't forget my own tool.
-
-### Substitution
-
-Available in RELEASE_TITLE and CHANGELOG_BODY
-
-Substitutions are {VERSION} and {DATE}
-
-Example
-
-```yml
-RELEASE_TITLE: "Cocoa Grader {VERSION}"
-CHANGELOG_BODY: "Created at {DATE}"
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          title: "Auto Publish Release"
 ```

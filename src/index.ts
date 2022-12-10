@@ -8,6 +8,7 @@ enum Input {
   tag = "tag",
   title = "title",
   zeroIsPreRelease = "zeroIsPreRelease",
+  testMode = "testMode",
 }
 
 async function run() {
@@ -37,10 +38,12 @@ async function run() {
     generate_release_notes: true,
   };
 
-  // * Release Release
-  await octokit.request("POST /repos/{owner}/{repo}/releases", postBody);
-
-  core.info(`Release version ${version} success`);
+  if (core.getBooleanInput(Input.testMode)) {
+    core.debug(JSON.stringify(postBody, null, 2));
+  } else {
+    await octokit.request("POST /repos/{owner}/{repo}/releases", postBody);
+    core.info(`Release version ${version} success`);
+  }
 }
 
 run().catch((error) => {

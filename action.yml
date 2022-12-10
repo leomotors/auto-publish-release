@@ -14,6 +14,10 @@ inputs:
     description: "Mark version leading with zero to be pre-release"
     default: false
 
+  testMode:
+    description: "Print the body of REST POST body but not sending it"
+    default: false
+
 runs:
   using: "node18"
   main: "dist/index.js"

@@ -2,8 +2,9 @@ name: Publish Release
 
 on:
   push:
-    tags:
-      - "*.*"
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   main:
@@ -15,8 +16,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Publish Release
-        uses: Leomotors/auto-publish-release@main
+        uses: ./
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
+          tag: "0.0.0-experimental.0"
           title: "Auto Publish Release"
+          testMode: true
