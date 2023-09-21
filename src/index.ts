@@ -18,6 +18,7 @@ async function run() {
   const { owner, repo } = github.context.repo;
 
   const version = core.getInput(Input.tag)?.split("/")?.at(-1);
+  const versionShort = version?.split("@").at(-1);
 
   if (!version) throw new Error(`Invalid Version: ${version}`);
 
@@ -28,7 +29,9 @@ async function run() {
 
   const body =
     (await getChangelog(version, core.getInput(Input.changelog))) ?? "";
-  const ReleaseName = `${core.getInput(Input.title) || "Release"} ${version}`;
+  const ReleaseName = `${
+    core.getInput(Input.title) || "Release"
+  } ${versionShort}`;
 
   const postBody = {
     owner,

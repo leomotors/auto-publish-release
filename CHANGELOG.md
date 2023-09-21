@@ -2,9 +2,13 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [4.1.0] - 2023-09-21
+
+- feat: now tag version correctly when given package@version format
+
 ## [4.0.0] - 2023-09-21
 
-- feat: now runs on node18
+- feat: now runs on node20
 - feat: new input `changelog` to override changelog path
 
 ## [3.0.0] - 2022-12-10

@@ -58,11 +58,12 @@ function run() {
         const octokit = github.getOctokit(ghToken);
         const { owner, repo } = github.context.repo;
         const version = (_b = (_a = core.getInput(Input.tag)) === null || _a === void 0 ? void 0 : _a.split("/")) === null || _b === void 0 ? void 0 : _b.at(-1);
+        const versionShort = version === null || version === void 0 ? void 0 : version.split("@").at(-1);
         if (!version)
             throw new Error(`Invalid Version: ${version}`);
         const prerelease = (0, utils_1.isPrerelease)(version, core.getBooleanInput(Input.zeroIsPreRelease));
         const body = (_c = (yield (0, utils_1.getChangelog)(version, core.getInput(Input.changelog)))) !== null && _c !== void 0 ? _c : "";
-        const ReleaseName = `${core.getInput(Input.title) || "Release"} ${version}`;
+        const ReleaseName = `${core.getInput(Input.title) || "Release"} ${versionShort}`;
         const postBody = {
             owner,
             repo,
