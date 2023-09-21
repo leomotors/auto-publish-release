@@ -18,9 +18,9 @@ export function isPrerelease(version: string, zeroIsPreRelease: boolean) {
   return false;
 }
 
-export async function getChangelog(version: string) {
+export async function getChangelog(version: string, path: string) {
   try {
-    const lines = (await fs.readFile("CHANGELOG.md")).toString().split("\n");
+    const lines = (await fs.readFile(path)).toString().split("\n");
 
     let body = "";
 

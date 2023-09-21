@@ -21,4 +21,5 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           tag: "0.0.0-experimental.0"
           title: "Auto Publish Release"
+          changelog: testmode.md
           testMode: true

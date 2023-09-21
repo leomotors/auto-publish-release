@@ -2,6 +2,11 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [4.0.0] - 2023-09-21
+
+- feat: now runs on node18
+- feat: new input `changelog` to override changelog path
+
 ## [3.0.0] - 2022-12-10
 
 First Release after almost 8 months? 🤔  
@@ -110,13 +115,3 @@ This release is major refactor of this library
 - Initial release
 
 Below are used for testing
-
-## [0.0.0-experimental.0] - Test Mode
-
-- For Test Mode
-
-### lorem ipsum
-
-- Test Test
-
-## Should not be included in test mode

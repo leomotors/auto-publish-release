@@ -13,6 +13,9 @@ inputs:
   zeroIsPreRelease:
     description: "Mark version leading with zero to be pre-release"
     default: false
+  changelog:
+    description: "Path of Changelog md file"
+    default: "CHANGELOG.md"
 
   testMode:
     description: "Print the body of REST POST body but not sending it"

@@ -9,6 +9,7 @@ enum Input {
   title = "title",
   zeroIsPreRelease = "zeroIsPreRelease",
   testMode = "testMode",
+  changelog = "changelog",
 }
 
 async function run() {
@@ -25,7 +26,8 @@ async function run() {
     core.getBooleanInput(Input.zeroIsPreRelease),
   );
 
-  const body = (await getChangelog(version)) ?? "";
+  const body =
+    (await getChangelog(version, core.getInput(Input.changelog))) ?? "";
   const ReleaseName = `${core.getInput(Input.title) || "Release"} ${version}`;
 
   const postBody = {
