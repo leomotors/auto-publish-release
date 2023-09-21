@@ -22,7 +22,7 @@ async function run() {
 
   const prerelease = isPrerelease(
     version,
-    core.getBooleanInput(Input.zeroIsPreRelease)
+    core.getBooleanInput(Input.zeroIsPreRelease),
   );
 
   const body = (await getChangelog(version)) ?? "";
