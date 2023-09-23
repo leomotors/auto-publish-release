@@ -15,11 +15,29 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Publish Release Test Mode
+      - name: Publish Release Test Mode 1
         uses: ./
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           tag: "0.0.0-experimental.0"
+          title: "Auto Publish Release"
+          changelog: testmode.md
+          testMode: true
+
+      - name: Publish Release Test Mode 2
+        uses: ./
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          tag: "package@0.0.0-experimental.0"
+          title: "Auto Publish Release"
+          changelog: testmode.md
+          testMode: true
+
+      - name: Publish Release Test Mode 3
+        uses: ./
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          tag: "@org/package@0.0.0-experimental.0"
           title: "Auto Publish Release"
           changelog: testmode.md
           testMode: true

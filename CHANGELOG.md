@@ -2,6 +2,10 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [4.2.0] - 2023-09-23
+
+- fix: handle complex tag correctly
+
 ## [4.1.0] - 2023-09-21
 
 - feat: now tag version correctly when given package@version format

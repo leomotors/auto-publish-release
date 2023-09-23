@@ -17,10 +17,18 @@ async function run() {
   const octokit = github.getOctokit(ghToken);
   const { owner, repo } = github.context.repo;
 
-  const version = core.getInput(Input.tag)?.split("/")?.at(-1);
-  const versionShort = version?.split("@").at(-1);
+  const tag = core.getInput(Input.tag);
 
-  if (!version) throw new Error(`Invalid Version: ${version}`);
+  if (!tag) {
+    throw new Error(`Invalid Version/Tag: ${tag}`);
+  }
+
+  if (tag.includes("refs/tags/")) {
+    core.warning("github.ref is deprecated, use github.ref_name instead");
+  }
+
+  const version = tag.replace("refs/tags/", "");
+  const versionShort = version.split("@").at(-1)!;
 
   const prerelease = isPrerelease(
     version,
