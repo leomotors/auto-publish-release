@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { isPrerelease } from "./utils";
 
 describe("Utils", () => {
-  it("isPrerelease", () => {
+  describe("isPrerelease", () => {
     it("Normal Case", () => {
       expect(isPrerelease("1.0.2", false)).toBe(false);
       expect(isPrerelease("6.9.420", false)).toBe(false);
