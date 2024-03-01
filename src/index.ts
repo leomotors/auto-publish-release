@@ -36,7 +36,7 @@ async function run() {
   );
 
   const body =
-    (await getChangelog(version, core.getInput(Input.changelog))) ?? "";
+    (await getChangelog(versionShort, core.getInput(Input.changelog))) ?? "";
   const ReleaseName = `${
     core.getInput(Input.title) || "Release"
   } ${versionShort}`;

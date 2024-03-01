@@ -2,6 +2,11 @@
 
 All notable changes to the "auto-publish-release" extension will be documented in this file.
 
+## [5.0.0] - 2024-03-02
+
+- chore: bump deps
+- fix: read changelog in tag with `@` case
+
 ## [4.2.0] - 2023-09-23
 
 - fix: handle complex tag correctly
