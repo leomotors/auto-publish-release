@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository is deprecated, the successor is in [leomotors/release-action](https://github.com/leomotors/release-action), please use that action instead
+
 # Auto Publish Release
 
 Create release when new tag is pushed, automatically grab changelog from CHANGELOG.md
